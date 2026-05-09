@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AL Saudia Restaurant — Pattoki</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lato:wght@300;400;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --silver: #B8C8D8;
+    --silver-light: #D8E8F4;
+    --dark: #080E1A;
+    --dark2: #0E1825;
+    --dark3: #142030;
+    --cream: #EAF0F8;
+    --accent: #3A7BD5;
+    --accent2: #5A9BF5;
+  }
+  body { font-family: 'Lato', sans-serif; background: var(--dark); color: var(--cream); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(8,14,26,0.96); backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(184,200,216,0.2);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 64px;
+  }
+  .logo { font-family: 'Amiri', serif; font-size: 1.4rem; color: var(--silver-light); letter-spacing: 1px; }
+  .logo span { font-size: 0.75rem; display: block; color: rgba(184,200,216,0.5); letter-spacing: 3px; text-transform: uppercase; font-family: 'Lato', sans-serif; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
+  .nav-links a { color: rgba(234,240,248,0.6); text-decoration: none; font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--silver-light); }
+  .nav-cta { background: var(--accent); color: #fff; padding: 8px 20px; border-radius: 3px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; border: none; font-weight: 700; font-family: 'Lato', sans-serif; }
+
+  .hero {
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    background: var(--dark); position: relative; overflow: hidden;
+    padding: 80px 2rem 2rem; flex-direction: column; text-align: center;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, rgba(58,123,213,0.13) 0%, transparent 70%);
+  }
+  .hero-badge {
+    font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--accent2); border: 1px solid rgba(90,155,245,0.35);
+    padding: 6px 20px; border-radius: 20px; margin-bottom: 1.5rem; display: inline-block;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5rem);
+    font-weight: 900; line-height: 1.1; margin-bottom: 0.5rem;
+    background: linear-gradient(135deg, #D8E8F4, #B8C8D8, #7A9EC0);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-arabic {
+    font-family: 'Amiri', serif; font-size: clamp(1.2rem, 3vw, 2rem);
+    color: rgba(184,200,216,0.5); margin-bottom: 1.5rem; direction: rtl;
+  }
+  .hero p { font-size: 1rem; color: rgba(234,240,248,0.55); max-width: 500px; line-height: 1.7; margin-bottom: 2.5rem; }
+  .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .btn-primary { background: var(--accent); color: #fff; padding: 14px 32px; border-radius: 3px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem; cursor: pointer; border: none; font-family: 'Lato'; }
+  .btn-outline { background: transparent; color: var(--silver-light); padding: 13px 32px; border-radius: 3px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; font-size: 0.85rem; cursor: pointer; border: 1px solid rgba(184,200,216,0.35); font-family: 'Lato'; }
+
+  .stats {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(184,200,216,0.15);
+    border-bottom: 1px solid rgba(184,200,216,0.15);
+    margin: 0 2rem;
+  }
+  .stat { padding: 2rem 1rem; text-align: center; border-right: 1px solid rgba(184,200,216,0.1); }
+  .stat:last-child { border-right: none; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent2); font-weight: 700; }
+  .stat-label { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(234,240,248,0.35); margin-top: 4px; }
+
+  .menu-section { background: var(--dark2); padding: 5rem 2rem; }
+  .menu-header { text-align: center; margin-bottom: 3rem; }
+  .section-label { font-size: 0.7rem; letter-spacing: 4px; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.75rem; }
+  .section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; margin-bottom: 1rem; }
+  .section-sub { color: rgba(234,240,248,0.45); font-size: 0.95rem; line-height: 1.7; max-width: 500px; margin: 0 auto; }
+
+  .cat-tabs { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2.5rem; }
+  .cat-tab { padding: 7px 16px; border-radius: 20px; border: 1px solid rgba(90,155,245,0.3); background: transparent; color: rgba(234,240,248,0.55); font-size: 0.78rem; cursor: pointer; font-family: 'Lato'; transition: all 0.2s; }
+  .cat-tab:hover, .cat-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; }
+
+  .menu-category { display: none; }
+  .menu-category.active { display: block; }
+  .cat-heading {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+    color: var(--accent2); border-bottom: 1px solid rgba(90,155,245,0.2);
+    padding-bottom: 0.5rem; margin-bottom: 1.2rem; margin-top: 0.5rem;
+  }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1px; background: rgba(184,200,216,0.08); margin-bottom: 2rem; }
+  .menu-item { background: var(--dark2); padding: 1rem 1.2rem; position: relative; overflow: hidden; transition: background 0.2s; }
+  .menu-item:hover { background: var(--dark3); }
+  .menu-item::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 0; background: var(--accent); transition: height 0.25s; }
+  .menu-item:hover::before { height: 100%; }
+  .mi-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .mi-name { font-size: 0.9rem; font-weight: 700; line-height: 1.4; color: var(--cream); }
+  .mi-price { color: var(--accent2); font-weight: 700; font-size: 0.85rem; white-space: nowrap; flex-shrink: 0; }
+  .mi-sub { font-size: 0.74rem; color: rgba(234,240,248,0.35); margin-top: 2px; }
+  .badge { display: inline-block; font-size: 0.6rem; letter-spacing: 0.5px; text-transform: uppercase; padding: 2px 7px; border-radius: 2px; margin-top: 4px; }
+  .badge-hot { background: rgba(213,80,58,0.2); color: #FF9080; border: 1px solid rgba(213,80,58,0.35); }
+  .badge-special { background: rgba(90,155,245,0.15); color: var(--accent2); border: 1px solid rgba(90,155,245,0.3); }
+  .badge-free { background: rgba(50,180,100,0.15); color: #70E8A0; border: 1px solid rgba(50,180,100,0.3); }
+
+  .speciality-banner {
+    background: var(--dark3); border: 1px solid rgba(90,155,245,0.2);
+    padding: 1.5rem; margin-bottom: 1rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .spec-left { display: flex; align-items: center; gap: 1rem; }
+  .spec-icon { font-size: 2rem; }
+  .spec-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--accent2); }
+  .spec-sub { font-size: 0.78rem; color: rgba(234,240,248,0.4); margin-top: 3px; line-height: 1.5; }
+  .spec-price { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--accent2); font-weight: 900; }
+  .spec-note { font-size: 0.68rem; color: rgba(234,240,248,0.35); letter-spacing: 1px; text-transform: uppercase; }
+
+  .about-section { padding: 5rem 2rem; }
+  .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .about-text .section-title { margin-bottom: 1.5rem; }
+  .about-text p { color: rgba(234,240,248,0.5); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1rem; }
+  .features-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem; }
+  .feature { display: flex; align-items: center; gap: 0.75rem; }
+  .feature-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent2); flex-shrink: 0; }
+  .feature span { font-size: 0.85rem; color: rgba(234,240,248,0.55); }
+  .about-visual {
+    position: relative; min-height: 300px;
+    background: var(--dark3); border: 1px solid rgba(184,200,216,0.12);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 2rem; text-align: center;
+  }
+  .about-visual::before { content: ''; position: absolute; inset: 8px; border: 1px solid rgba(184,200,216,0.08); pointer-events: none; }
+  .big-rating { font-family: 'Playfair Display', serif; font-size: 5rem; color: var(--accent2); font-weight: 900; line-height: 1; }
+  .stars { color: var(--accent2); font-size: 1.2rem; margin: 0.5rem 0; }
+  .rating-note { font-size: 0.8rem; color: rgba(234,240,248,0.35); letter-spacing: 1px; }
+  .review-quote { font-style: italic; font-size: 0.88rem; color: rgba(234,240,248,0.45); line-height: 1.6; margin-top: 1.5rem; border-left: 2px solid var(--accent); padding-left: 1rem; text-align: left; }
+
+  .location-section { background: var(--dark2); padding: 5rem 2rem; }
+  .location-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 3rem; }
+  .info-card { background: var(--dark); border: 1px solid rgba(184,200,216,0.12); padding: 1.5rem; margin-bottom: 1rem; }
+  .info-card-title { font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: var(--accent2); margin-bottom: 0.75rem; }
+  .info-card p { font-size: 0.9rem; color: rgba(234,240,248,0.55); line-height: 1.6; }
+  .phone-link { color: var(--accent2); text-decoration: none; font-weight: 700; font-size: 1.1rem; }
+  .map-box {
+    background: var(--dark); border: 1px solid rgba(184,200,216,0.15);
+    min-height: 280px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 1rem;
+    color: rgba(234,240,248,0.25); cursor: pointer; transition: all 0.2s; text-decoration: none;
+  }
+  .map-box:hover { border-color: var(--accent2); color: var(--accent2); }
+  .map-box p { font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; }
+
+  footer {
+    border-top: 1px solid rgba(184,200,216,0.15);
+    padding: 2rem; text-align: center;
+    color: rgba(234,240,248,0.2); font-size: 0.8rem;
+  }
+  footer strong { color: var(--accent2); }
+
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .hero > * { animation: fadeUp 0.6s ease both; }
+  .hero .hero-badge { animation-delay: 0.1s; }
+  .hero h1 { animation-delay: 0.2s; }
+  .hero-arabic { animation-delay: 0.3s; }
+  .hero p { animation-delay: 0.4s; }
+  .hero-actions { animation-delay: 0.5s; }
+
+  @media (max-width: 700px) {
+    .about-inner, .location-inner { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .stats { margin: 0; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">AL Saudia <span>Restaurant — Pattoki</span></div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#location">Location</a></li>
+  </ul>
+  <button class="nav-cta" onclick="window.open('tel:+923216287655')">📞 Call Now</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">Free Home Delivery · Pattoki</div>
+  <h1>Mutaam AL Saudia<br>Restaurant</h1>
+  <div class="hero-arabic">مطعم السعودية — عمدہ اور لذیذ کھانوں کا مرکز</div>
+  <p>Pattoki ka sab se umda aur laziz khano ka markaz. Breakfast se leke BBQ, Desi Food, Mandi aur bahut kuch — sab ek jagah.</p>
+  <div class="hero-actions">
+    <button class="btn-primary" onclick="document.getElementById('menu').scrollIntoView({behavior:'smooth'})">View Full Menu</button>
+    <button class="btn-outline" onclick="window.open('tel:+923216287655')">0321-6287655</button>
+  </div>
+</div>
+
+<div style="padding: 0 2rem;">
+  <div class="stats">
+    <div class="stat"><div class="stat-num">4.4★</div><div class="stat-label">Google Rating</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">Halal</div></div>
+    <div class="stat"><div class="stat-num">FREE</div><div class="stat-label">Home Delivery</div></div>
+  </div>
+</div>
+
+<section class="menu-section" id="menu">
+  <div class="menu-header">
+    <div class="section-label">Complete Menu</div>
+    <div class="section-title">Our Full Menu &amp; Prices</div>
+    <div class="section-sub">Near Total Pump, Multan Road, Pattoki — 0321-6287655</div>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab active" onclick="showCat('breakfast',this)">🍳 Breakfast</button>
+    <button class="cat-tab" onclick="showCat('bbq',this)">🔥 BBQ</button>
+    <button class="cat-tab" onclick="showCat('desi',this)">🍛 Desi Food</button>
+    <button class="cat-tab" onclick="showCat('tandoor',this)">🫓 Tandoor</button>
+    <button class="cat-tab" onclick="showCat('rice',this)">🍚 Rice</button>
+    <button class="cat-tab" onclick="showCat('drinks',this)">🥤 Drinks</button>
+    <button class="cat-tab" onclick="showCat('icecream',this)">🍦 Ice Cream</button>
+    <button class="cat-tab" onclick="showCat('sweet',this)">🥗 Sweet &amp; Salad</button>
+    <button class="cat-tab" onclick="showCat('special',this)">⭐ Speciality</button>
+  </div>
+
+  <!-- BREAKFAST -->
+  <div class="menu-category active" id="cat-breakfast">
+    <div class="cat-heading">🍳 Breakfast</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Egg Omelette</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Egg Full / Half Fry</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Omelette Paratha</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Tawa Paratha</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Gandum Paratha</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Aloo Paratha</span><span class="mi-price">Rs 170</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Channay</span><span class="mi-price">Rs 110 / 220</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Haleeem</span><span class="mi-price">Rs 110 / 220</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Bong Pay</span><span class="mi-price">Rs 350 / 700</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Sada Naan</span><span class="mi-price">Rs 40</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Nagri Naan</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Kalwanji Naan</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Boil Egg</span><span class="mi-price">Rs 60</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Koftay</span><span class="mi-price">Rs 60</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Dahi Bowl</span><span class="mi-price">Rs 120</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chai</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Lassi</span><span class="mi-price">Rs 170</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Raita</span><span class="mi-price">Rs 90</span></div></div>
+    </div>
+  </div>
+
+  <!-- BBQ -->
+  <div class="menu-category" id="cat-bbq">
+    <div class="cat-heading">🔥 B.B.Q</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Tikka Boti</span><span class="mi-price">4Pc — Rs 220</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Malai Boti</span><span class="mi-price">4Pc — Rs 300</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Rajhasthani Boti</span><span class="mi-price">4Pc — Rs 350</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Leg Piece</span><span class="mi-price">Rs 300</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Chest</span><span class="mi-price">Rs 300</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Hari Bari Boti</span><span class="mi-price">4Pc — Rs 450</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Shashthak Boti</span><span class="mi-price">4Pc — Rs 410</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Kasturi Tikka</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Achari Tikka</span><span class="mi-price">Rs 350</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Kasturi Tikka</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Malai Leg Piece</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Kabab</span><span class="mi-price">Rs 160</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Reshami Kabab</span><span class="mi-price">Rs 200</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Beef Kabab</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Cheese Kabab</span><span class="mi-price">Rs 200</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Hara Bara Kabab</span><span class="mi-price">Rs 300</span></div></div>
+    </div>
+  </div>
+
+  <!-- DESI FOOD -->
+  <div class="menu-category" id="cat-desi">
+    <div class="cat-heading">🍛 Desi Food</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Karahi</span><span class="mi-price">Rs 900 / 1800</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken White Karahi</span><span class="mi-price">Rs 1050 / 2100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Black Pepper</span><span class="mi-price">Rs 1050 / 2100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Shinwari Karahi</span><span class="mi-price">Rs 1250 / 2400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Achari Karahi</span><span class="mi-price">Rs 1100 / 2200</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Desi Chicken Karahi</span><span class="mi-price">Rs 1500 / 3000</span></div><span class="badge badge-hot">Popular</span></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Handi</span><span class="mi-price">Rs 950 / 1900</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Black Pepper Handi</span><span class="mi-price">Rs 950 / 1900</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Madrasi Handi</span><span class="mi-price">Rs 964 / 1900</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken White Handi</span><span class="mi-price">Rs 1050 / 2100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Peshwari Handi</span><span class="mi-price">Rs 1050 / 2100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Beef Karahi</span><span class="mi-price">Rs 1150 / 2300</span></div><span class="badge badge-hot">Best Seller</span></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Beef White Karahi</span><span class="mi-price">Rs 1350 / 2600</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Beef Black Pepper</span><span class="mi-price">Rs 1350 / 2600</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Beef Achaari Karahi</span><span class="mi-price">Rs 1350 / 2600</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Karahi</span><span class="mi-price">Rs 1800 / 3600</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton White</span><span class="mi-price">Rs 1800 / 3600</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Black Pepper</span><span class="mi-price">Rs 1900 / 3800</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Achaari Karahi</span><span class="mi-price">Rs 1850 / 3700</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Shinwari Karahi</span><span class="mi-price">Rs 2030 / 3900</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Qeema</span><span class="mi-price">Rs 500 / 1000</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Dampukht</span><span class="mi-price">Rs 3700</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mutton Nankoos</span><span class="mi-price">Rs 3450</span></div></div>
+    </div>
+  </div>
+
+  <!-- TANDOOR -->
+  <div class="menu-category" id="cat-tandoor">
+    <div class="cat-heading">🫓 Tandoor</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Roti Per Head</span><span class="mi-price">Rs 60</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Khamiri Roti</span><span class="mi-price">Rs 30</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Sada Naan</span><span class="mi-price">Rs 40</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Rogani Naan</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Garlic Naan</span><span class="mi-price">Rs 130</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Kalwanji Naan</span><span class="mi-price">Rs 130</span></div></div>
+    </div>
+  </div>
+
+  <!-- RICE -->
+  <div class="menu-category" id="cat-rice">
+    <div class="cat-heading">🍚 Rice</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Biryani</span><span class="mi-price">Rs 270 / 540</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Hyderabadi Biryani</span><span class="mi-price">Rs 270 / 540</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chicken Pulao</span><span class="mi-price">Rs 500</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Egg Fried Rice</span><span class="mi-price">Rs 750</span></div></div>
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div class="menu-category" id="cat-drinks">
+    <div class="cat-heading">🍹 Mojito &amp; Drinks</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mint Margarita</span><span class="mi-price">Rs 230</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Peach Margarita</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Fatza Margerita</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Lemonade</span><span class="mi-price">Rs 200</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Fresh Lime</span><span class="mi-price">Rs 200</span></div></div>
+    </div>
+    <div class="cat-heading">🥛 Milk Shake</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Mango Shake</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Banana Shake</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Strawberry Shake</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Oreo Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Pina Colada Shake</span><span class="mi-price">Rs 450</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Pineapple Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Khoya Khajur Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Al-Saudia Special Shake</span><span class="mi-price">Rs 950</span></div><span class="badge badge-special">House Special</span></div>
+    </div>
+    <div class="cat-heading">🍊 Fresh Juice</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Falsa Juice</span><span class="mi-price">Rs 260</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Orange Juice</span><span class="mi-price">Rs 300</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Peach Juice</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Anar Juice</span><span class="mi-price">Rs 550</span></div></div>
+    </div>
+    <div class="cat-heading">☕ Coffee &amp; Tea</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Cold Coffee with Ice Cream</span><span class="mi-price">Rs 480</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Cappuccino</span><span class="mi-price">Rs 350</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Black Coffee</span><span class="mi-price">Rs 200</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Black Coffee with Milk</span><span class="mi-price">Rs 250</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Tea</span><span class="mi-price">Rs 100</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Green Tea Kawa</span><span class="mi-price">Rs 100</span></div></div>
+    </div>
+    <div class="cat-heading">🥤 Bottled Drinks</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">1.5 Ltr Bottle</span><span class="mi-price">Rs 220</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">500ml Bottle</span><span class="mi-price">Rs 120</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Regular Can</span><span class="mi-price">Rs 80</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Water Large</span><span class="mi-price">Rs 110</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Water Small</span><span class="mi-price">Rs 60</span></div></div>
+    </div>
+  </div>
+
+  <!-- ICE CREAM -->
+  <div class="menu-category" id="cat-icecream">
+    <div class="cat-heading">🍦 Ice Bar</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Two Scope</span><span class="mi-price">Rs 240</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Three Scope</span><span class="mi-price">Rs 350</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Al'Saudia Special Ice Cream</span><span class="mi-price">Rs 400</span></div><span class="badge badge-special">3 Scope Special</span></div>
+    </div>
+    <div class="mi-sub" style="margin:0.5rem 0 1.5rem; font-size:0.8rem; color:rgba(234,240,248,0.4); padding:0 0.2rem;">Flavors: Mango · Vanilla · Tutti Frutti · Caramel Crunch · Pista · Kulfa · Chocolate Chip</div>
+    <div class="cat-heading">🥤 Ice Cream Shakes</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Kulfa Shake</span><span class="mi-price">Rs 450</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Vanilla Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Tutti Frutti Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Pista Shake</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Chocolate Shake</span><span class="mi-price">Rs 450</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Caramel Crunch Shake</span><span class="mi-price">Rs 450</span></div></div>
+    </div>
+  </div>
+
+  <!-- SWEET & SALAD -->
+  <div class="menu-category" id="cat-sweet">
+    <div class="cat-heading">🥗 Sweet &amp; Salad</div>
+    <div class="menu-grid">
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Russian Salad</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Cream Chat</span><span class="mi-price">Rs 400</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Fruit Chat</span><span class="mi-price">Rs 350</span></div></div>
+      <div class="menu-item"><div class="mi-row"><span class="mi-name">Special Russian Salad</span><span class="mi-price">Rs 500</span></div></div>
+    </div>
+  </div>
+
+  <!-- SPECIALITY -->
+  <div class="menu-category" id="cat-special">
+    <div class="cat-heading">⭐ Our Speciality</div>
+    <div class="speciality-banner">
+      <div class="spec-left">
+        <div class="spec-icon">🍖</div>
+        <div>
+          <div class="spec-title">Special Saudia Mandi Platter</div>
+          <div class="spec-sub">1 Tikka Boti · 1 Malai Boti · 1 Rajhasthani Boti · 1 Malai Leg Piece · 1 Chicken Leg Piece · Rice + Raita</div>
+        </div>
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div class="spec-price">Rs 5500</div>
+        <div class="spec-note">Complete Platter</div>
+      </div>
+    </div>
+    <div class="speciality-banner">
+      <div class="spec-left">
+        <div class="spec-icon">🍗</div>
+        <div>
+          <div class="spec-title">B.B.Q Max Platter</div>
+          <div class="spec-sub">1 Tikka Boti · 1 Malai Boti · 1 Rajhasthani Boti · 1 Malai Leg Piece · 1 Chicken Leg Piece · Rice + Raita</div>
+        </div>
+      </div>
+      <div style="text-align:right; flex-shrink:0;">
+        <div class="spec-price">Rs 2250</div>
+        <div class="spec-note">Max Value Deal</div>
+      </div>
+    </div>
+    <div style="margin-top:1rem; padding:1.2rem; background:rgba(50,180,100,0.07); border:1px solid rgba(50,180,100,0.2);">
+      <span class="badge badge-free" style="font-size:0.75rem; padding:4px 12px;">🛵 Free Home Delivery Available</span>
+      <p style="margin-top:0.75rem; font-size:0.9rem; color:rgba(234,240,248,0.55);">Call <strong style="color:var(--accent2);">0321-6287655</strong> to place your order. Near Total Pump, Multan Road, Pattoki.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-label">Our Story</div>
+      <div class="section-title">Arabian Heart,<br>Pakistani Soul</div>
+      <p>AL Saudia brings the warmth of Arabian hospitality to Pattoki. Located on Multan Road near Total Pump, we've built a reputation for generous portions, authentic flavors, and staff who treat every guest like family.</p>
+      <p>"We ensure you the best taste point in the area, giving you every single item on the table. Choose best, choose Al-Saudia Restaurant."</p>
+      <div class="features-list">
+        <div class="feature"><div class="feature-dot"></div><span>100% Halal</span></div>
+        <div class="feature"><div class="feature-dot"></div><span>Free Home Delivery</span></div>
+        <div class="feature"><div class="feature-dot"></div><span>Dine-in available</span></div>
+        <div class="feature"><div class="feature-dot"></div><span>Friendly staff</span></div>
+        <div class="feature"><div class="feature-dot"></div><span>Arabian cuisine</span></div>
+        <div class="feature"><div class="feature-dot"></div><span>Full Menu Available</span></div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="big-rating">4.4</div>
+      <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div>
+      <div class="rating-note">47 Google Reviews</div>
+      <div class="review-quote">"Food quality 9/10 · Service 10/10 · Atmosphere 10/10 — Staff very friendly and polite."<br><br>— Verified Google Review</div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location-section" id="location">
+  <div style="text-align:center;">
+    <div class="section-label">Find Us</div>
+    <div class="section-title">Visit Us Today</div>
+  </div>
+  <div class="location-inner">
+    <div>
+      <div class="info-card">
+        <div class="info-card-title">Address</div>
+        <p>Multan Road, near Total Pump<br>Faisal Colony, Pattoki, Punjab, Pakistan</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Phone / Order</div>
+        <p><a class="phone-link" href="tel:+923216287655">0321-6287655</a></p>
+        <p style="margin-top:0.5rem; font-size:0.8rem;">Free Home Delivery Available</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-title">Hours</div>
+        <p>Open daily — Breakfast, Lunch &amp; Dinner<br>Call to confirm timings</p>
+      </div>
+    </div>
+    <a class="map-box" href="https://maps.app.goo.gl/HkXvNUoXjmfsXZxT6" target="_blank">
+      <div style="font-size:3rem;">🗺️</div>
+      <p>Open in Google Maps</p>
+      <p style="font-size:0.7rem; margin-top:0.5rem; opacity:0.5;">Multan Rd · Pattoki</p>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <strong>AL Saudia Restaurant</strong> &nbsp;·&nbsp; Pattoki, Punjab &nbsp;·&nbsp; 0321-6287655<br>
+  <span style="margin-top:0.5rem; display:block;">مطعم السعودية — عمدہ اور لذیذ کھانوں کا مرکز</span>
+</footer>
+
+<script>
+  function showCat(id, btn) {
+    document.querySelectorAll('.menu-category').forEach(function(el){ el.classList.remove('active'); });
+    document.querySelectorAll('.cat-tab').forEach(function(el){ el.classList.remove('active'); });
+    document.getElementById('cat-' + id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+</body>
+</html>
